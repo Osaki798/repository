@@ -6,4 +6,5 @@
 Картина 2
 
 <img width="736" height="766" alt="dbdiagram" src="https://github.com/user-attachments/assets/0d1003cd-6be7-47db-bd2a-54d8689eb4e7" />
+
 Картинка 3. Er диаграмма
