@@ -1,4 +1,3 @@
-
 Table users {
   user_id varchar [pk, note: 'UUID или SHA-512 хэш сессии']
   username varchar [note: 'Анонимный юзернейм']
