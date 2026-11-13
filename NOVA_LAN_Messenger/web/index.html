@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NOVA Messenger</title>
+<style>
+:root{--bg:#090e1b;--panel:#101a2d;--panel2:#16233b;--line:#263650;--text:#f3f6ff;--muted:#8e9bb8;--accent:#8065ff;--accent2:#5d46db;--green:#43d6a0}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 10% 0%,#18254a 0,transparent 42%),var(--bg);color:var(--text);font:15px 'Segoe UI',Arial,sans-serif;height:100vh;overflow:hidden}
+button,input{font:inherit}button{cursor:pointer;border:0}
+.auth-wrap{height:100vh;display:grid;place-items:center;padding:24px}
+.auth-card{width:min(440px,96vw);padding:38px;background:linear-gradient(145deg,#15213a,#10182a);border:1px solid #2b3a5c;border-radius:26px;box-shadow:0 30px 100px #0009}
+.logo{font-size:14px;font-weight:800;letter-spacing:7px;color:#a99aff}.logo span{color:#fff}
+h1{font-size:30px;margin:20px 0 8px}.sub{color:var(--muted);line-height:1.5;margin:0 0 26px}
+.field{display:block;color:#b9c4dc;font-size:12px;font-weight:700;margin:17px 0 7px}
+input{width:100%;padding:14px 15px;border-radius:12px;background:#0b1324;color:white;border:1px solid #2a3855;outline:none}
+input:focus{border-color:#8a74ff;box-shadow:0 0 0 3px #8065ff22}
+.primary{width:100%;padding:14px;border-radius:12px;background:linear-gradient(100deg,var(--accent),#6247df);color:#fff;font-weight:800;box-shadow:0 8px 24px #6247df44}
+.primary:hover{filter:brightness(1.12)}.switch{text-align:center;color:var(--muted);margin-top:20px;font-size:13px}.switch a{color:#b4a7ff;text-decoration:none;font-weight:700}
+.note{font-size:11px;color:#71809e;margin-top:22px;text-align:center}
+#app{display:none;height:100vh;padding:18px}.shell{height:100%;max-width:1500px;margin:auto;display:grid;grid-template-columns:310px 1fr;background:#0e1729;border:1px solid #283854;border-radius:22px;overflow:hidden;box-shadow:0 25px 90px #0008}
+.sidebar{background:#111c30;border-right:1px solid #273650;display:flex;flex-direction:column;min-width:0}
+.side-head{padding:25px 22px 18px;border-bottom:1px solid #273650}.brand{display:flex;align-items:center;gap:12px}.brand-mark{width:40px;height:40px;border-radius:13px;background:linear-gradient(140deg,#9a85ff,#5841d7);display:grid;place-items:center;font-weight:900;font-size:19px;box-shadow:0 8px 25px #7058e866}.brand-title{font-weight:900;letter-spacing:4px}.brand-caption{font-size:11px;color:var(--muted);margin-top:3px}
+.me{display:flex;align-items:center;gap:11px;margin-top:22px}.avatar{width:39px;height:39px;border-radius:50%;display:grid;place-items:center;background:#29375a;color:#c9c0ff;font-weight:800}.me-name{font-weight:700}.online{font-size:11px;color:var(--green);margin-top:3px}
+.section{padding:18px 20px 8px;color:#7888a8;font-size:10px;font-weight:800;letter-spacing:2px}
+.users{overflow:auto;padding:5px 10px;flex:1}.user{display:flex;align-items:center;gap:11px;padding:12px;border-radius:13px;cursor:pointer;margin:3px 0;transition:.15s}.user:hover{background:#1a2942}.user.active{background:#28365b;box-shadow:inset 3px 0 #947eff}.user .avatar{width:37px;height:37px;font-size:13px}.user-name{font-weight:650}.status{font-size:11px;color:#8190ad;margin-top:3px}.dot{width:7px;height:7px;border-radius:50%;background:#64728e;margin-left:auto}.dot.on{background:#43d6a0;box-shadow:0 0 9px #43d6a0}
+.side-foot{padding:14px 18px;border-top:1px solid #273650;display:flex;align-items:center;justify-content:space-between;color:var(--muted);font-size:12px}.ghost{background:#202d46;color:#b9c4dc;padding:9px 12px;border-radius:9px}
+.chat{display:flex;flex-direction:column;min-width:0;background:radial-gradient(ellipse at 85% 5%,#1b2850 0,transparent 36%),#0c1424}
+.chat-head{height:82px;display:flex;align-items:center;padding:0 28px;border-bottom:1px solid #263650;gap:13px}.chat-head .avatar{width:43px;height:43px}.chat-title{font-weight:800}.chat-sub{font-size:11px;color:var(--muted);margin-top:4px}
+.messages{flex:1;overflow:auto;padding:25px clamp(18px,4vw,56px);display:flex;flex-direction:column;gap:13px}
+.empty{margin:auto;text-align:center;color:#7f8eac}.empty .big{font-size:48px;margin-bottom:14px}.empty b{color:#d9def0;display:block;font-size:18px;margin-bottom:8px}
+.msg{max-width:min(68%,620px);padding:12px 15px;border-radius:16px;background:#1a2942;border:1px solid #2b3d5c;align-self:flex-start;line-height:1.45;overflow-wrap:anywhere}
+.msg.mine{align-self:flex-end;background:linear-gradient(135deg,#5545a8,#46368f);border-color:#7664d4}.msg-time{font-size:10px;color:#aab4ce;margin-top:7px;text-align:right}.msg a{color:#c9c0ff}.msg img{max-width:260px;max-height:220px;border-radius:10px;display:block;margin:5px 0}.file-link{display:inline-block;padding:8px 10px;border-radius:8px;background:#ffffff16;color:white;text-decoration:none;margin-top:5px}
+.composer{padding:17px 24px 22px;border-top:1px solid #263650;display:flex;gap:10px;align-items:center}.composer input{flex:1;border-radius:13px;padding:14px 16px}.send{height:47px;width:52px;border-radius:13px;background:linear-gradient(140deg,#917bff,#6349e2);color:white;font-size:20px}.attach{height:47px;width:47px;border-radius:13px;background:#1d2b45;color:#b8c5e3;font-size:19px}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1c2942;border:1px solid #42557b;color:#fff;padding:12px 18px;border-radius:12px;display:none;z-index:20;box-shadow:0 12px 35px #0008}
+.modal-bg{position:fixed;inset:0;background:#030611d9;display:none;place-items:center;z-index:30;padding:18px;backdrop-filter:blur(8px)}
+.modal{width:min(620px,94vw);background:linear-gradient(145deg,#17233b,#0e1728);border:1px solid #39486b;border-radius:22px;padding:18px;box-shadow:0 30px 100px #000c;text-align:center}
+.modal-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;color:#b9c5df;font-size:12px;letter-spacing:2px;font-weight:800}.modal-close{background:#263550;color:#fff;border-radius:9px;padding:7px 11px}
+.tenor-gif-embed{border-radius:13px;overflow:hidden;background:#080d18;min-height:170px}
+.continue{margin-top:14px;padding:12px 28px;border-radius:11px;background:#8065ff;color:white;font-weight:800}
+@media(max-width:760px){#app{padding:0}.shell{border-radius:0;border:0;grid-template-columns:105px 1fr}.side-head{padding:14px 10px}.brand-title,.brand-caption,.me-name,.online,.section,.user-name,.status,.side-foot span{display:none}.me{justify-content:center}.users{padding:4px}.user{justify-content:center;padding:10px 4px}.user .avatar{margin:0}.side-foot{justify-content:center;padding:10px 4px}.ghost{font-size:10px;padding:8px 6px}.chat-head{padding:0 14px}.messages{padding:18px 12px}.msg{max-width:88%}.composer{padding:12px}.attach{width:40px}.send{width:44px}}
+</style>
+</head>
+<body>
+<div id="auth" class="auth-wrap">
+ <div class="auth-card">
+  <div class="logo">NOVA <span>MESSENGER</span></div>
+  <h1 id="authTitle">С возвращением</h1>
+  <p class="sub" id="authSub">Войди в аккаунт, чтобы продолжить общение в локальной сети.</p>
+  <form id="authForm">
+   <label class="field">ИМЯ ПОЛЬЗОВАТЕЛЯ</label><input id="username" autocomplete="username" placeholder="Например, alex" maxlength="20" required>
+   <label class="field">ПАРОЛЬ</label><input id="password" type="password" autocomplete="current-password" placeholder="Твой пароль" required>
+   <div id="confirmWrap" style="display:none"><label class="field">ПОВТОРИ ПАРОЛЬ</label><input id="confirm" type="password" placeholder="Ещё раз пароль"></div>
+   <button class="primary" id="authButton" style="margin-top:24px">ВОЙТИ В АККАУНТ</button>
+  </form>
+  <div class="switch"><span id="switchText">Впервые здесь?</span> <a href="#" id="switchLink">Создать аккаунт</a></div>
+  <div class="note">Локальный мессенджер • данные сохраняются на компьютере-сервере</div>
+ </div>
+</div>
+<div id="app">
+ <div class="shell">
+  <aside class="sidebar">
+   <div class="side-head">
+    <div class="brand"><div class="brand-mark">N</div><div><div class="brand-title">NOVA</div><div class="brand-caption">LOCAL MESSENGER</div></div></div>
+    <div class="me"><div class="avatar" id="myAvatar">N</div><div><div class="me-name" id="myName">Пользователь</div><div class="online">● В сети</div></div></div>
+   </div>
+   <div class="section">КОНТАКТЫ</div>
+   <div class="users" id="users"></div>
+   <div class="side-foot"><span>Твоя локальная сеть</span><button class="ghost" id="logout">Выйти</button></div>
+  </aside>
+  <main class="chat">
+   <div class="chat-head" id="chatHead"><div class="avatar">✦</div><div><div class="chat-title">NOVA Messenger</div><div class="chat-sub">Выбери пользователя слева, чтобы начать</div></div></div>
+   <div class="messages" id="messages"><div class="empty"><div class="big">✦</div><b>Добро пожаловать в NOVA</b>Выбери контакт слева или дождись, пока друг зарегистрируется.</div></div>
+   <div class="composer"><input id="messageInput" placeholder="Сначала выбери собеседника..." disabled><input type="file" id="fileInput" hidden accept="image/*,video/*"><button class="attach" id="attach" title="Прикрепить файл" disabled>＋</button><button class="send" id="send" disabled>➤</button></div>
+  </main>
+ </div>
+</div>
+<div class="modal-bg" id="welcome">
+ <div class="modal">
+  <div class="modal-top"><span>✦ NOVA DROP</span><button class="modal-close" id="closeWelcome">✕</button></div>
+  <div class="tenor-gif-embed" data-postid="8426829613583318199" data-share-method="host" data-aspect-ratio="1.76596" data-width="100%"><a href="https://tenor.com/view/musor-drop-cs2-csgo-cs-counter-strike-gif-8426829613583318199">Musor Drop Cs2 GIF</a> from <a href="https://tenor.com/search/musor+drop-gifs">Musor Drop GIFs</a></div>
+  <button class="continue" id="continueWelcome">ПРОДОЛЖИТЬ</button>
+ </div>
+</div>
+<div class="toast" id="toast"></div>
+<script async src="https://tenor.com/embed.js"></script>
+<script>
+let token=null, me=null, selected=null, lastId=0, seen=new Set(), registerMode=false, pollTimer=null;
+const $=id=>document.getElementById(id);
+function toast(s){let t=$('toast');t.textContent=s;t.style.display='block';clearTimeout(toast.timer);toast.timer=setTimeout(()=>t.style.display='none',3000)}
+function api(path,body){return fetch(path,{method:body?'POST':'GET',headers:{'Content-Type':'application/json',...(token?{'X-NOVA-Token':token}:{})},body:body?JSON.stringify(body):undefined}).then(async r=>{let d=await r.json();if(!r.ok)throw Error(d.error||'Ошибка');return d})}
+function setMode(reg){registerMode=reg;$('authTitle').textContent=reg?'Создание аккаунта':'С возвращением';$('authSub').textContent=reg?'Придумай логин и пароль — аккаунт сохранится на серверном компьютере.':'Войди в аккаунт, чтобы продолжить общение в локальной сети.';$('confirmWrap').style.display=reg?'block':'none';$('authButton').textContent=reg?'СОЗДАТЬ АККАУНТ':'ВОЙТИ В АККАУНТ';$('switchText').textContent=reg?'Уже есть аккаунт?':'Впервые здесь?';$('switchLink').textContent=reg?'Войти':'Создать аккаунт';$('password').autocomplete=reg?'new-password':'current-password'}
+$('switchLink').onclick=e=>{e.preventDefault();setMode(!registerMode)};
+$('authForm').onsubmit=async e=>{e.preventDefault();let username=$('username').value.trim(),password=$('password').value;if(registerMode&&password!==$('confirm').value)return toast('Пароли не совпадают');try{let d=await api(registerMode?'/api/register':'/api/login',{username,password});token=d.token;me=d.username;enterApp(true)}catch(err){toast(err.message)}};
+function enterApp(showDrop){$('auth').style.display='none';$('app').style.display='block';$('myName').textContent=me;$('myAvatar').textContent=me[0].toUpperCase();loadUsers();if(pollTimer)clearInterval(pollTimer);pollTimer=setInterval(()=>{loadUsers();pollMessages()},1800);if(showDrop){$('welcome').style.display='grid';if(!window.__tenorScriptLoaded){let sc=document.createElement('script');sc.src='https://tenor.com/embed.js';sc.async=true;document.body.appendChild(sc);window.__tenorScriptLoaded=true}}}
+function logout(){token=null;me=null;selected=null;lastId=0;seen.clear();if(pollTimer)clearInterval(pollTimer);$('app').style.display='none';$('auth').style.display='grid';$('password').value='';setMode(false)}
+$('logout').onclick=logout;
+$('closeWelcome').onclick=$('continueWelcome').onclick=()=>$('welcome').style.display='none';
+async function loadUsers(){if(!token)return;try{let d=await api('/api/users');let box=$('users');box.innerHTML='';if(!d.users.length){box.innerHTML='<div style="color:#7f8eac;text-align:center;padding:22px 8px;font-size:12px">Пока нет других пользователей.<br><br>Попроси друга запустить NOVA и зарегистрироваться.</div>';return}d.users.forEach(u=>{let el=document.createElement('div');el.className='user'+(selected?.toLowerCase()===u.username.toLowerCase()?' active':'');el.innerHTML=`<div class="avatar">${escapeHtml(u.username[0].toUpperCase())}</div><div style="min-width:0"><div class="user-name">${escapeHtml(u.username)}</div><div class="status">${u.online?'В сети':'Не в сети'}</div></div><div class="dot ${u.online?'on':''}"></div>`;el.onclick=()=>selectUser(u.username);box.appendChild(el)})}catch(e){if(e.message.includes('Войдите'))logout()}}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+async function selectUser(name){selected=name;lastId=0;seen.clear();$('chatHead').innerHTML=`<div class="avatar">${escapeHtml(name[0].toUpperCase())}</div><div><div class="chat-title">${escapeHtml(name)}</div><div class="chat-sub">Личная переписка</div></div>`;$('messageInput').disabled=false;$('attach').disabled=false;$('send').disabled=false;$('messageInput').placeholder='Напиши сообщение...';await loadHistory();loadUsers()}
+async function loadHistory(){if(!selected)return;try{let d=await api('/api/history?with='+encodeURIComponent(selected));$('messages').innerHTML='';d.messages.forEach(renderMessage);$('messages').scrollTop=$('messages').scrollHeight;lastId=Math.max(lastId,...d.messages.map(m=>m.id),0)}catch(e){toast(e.message)}}
+function renderMessage(m){if(seen.has(m.id))return;seen.add(m.id);let el=document.createElement('div');el.className='msg'+(m.sender.toLowerCase()===me.toLowerCase()?' mine':'');let html='';if(m.text)html+=`<div>${escapeHtml(m.text).replace(/\n/g,'<br>')}</div>`;if(m.file_id){let url='/media?id='+encodeURIComponent(m.file_id);if((m.file_type||'').startsWith('image/'))html+=`<a href="${url}" target="_blank"><img src="${url}" alt="${escapeHtml(m.file_name)}"></a>`;else html+=`<a class="file-link" href="${url}" download="${escapeHtml(m.file_name)}">⬇ ${escapeHtml(m.file_name||'Файл')}</a>`}let d=new Date(m.time*1000);html+=`<div class="msg-time">${escapeHtml(m.sender)} · ${d.toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'})}</div>`;el.innerHTML=html;$('messages').appendChild(el);$('messages').scrollTop=$('messages').scrollHeight}
+async function pollMessages(){if(!token)return;try{let d=await api('/api/poll?after='+lastId);for(let m of d.messages){lastId=Math.max(lastId,m.id);if(selected&&(m.sender.toLowerCase()===selected.toLowerCase()||m.recipient.toLowerCase()===selected.toLowerCase()))renderMessage(m)}}catch(e){}}
+async function sendText(){if(!selected)return;let input=$('messageInput'),text=input.value.trim();if(!text)return;input.value='';try{let d=await api('/api/send',{recipient:selected,text});lastId=Math.max(lastId,d.message.id);renderMessage(d.message)}catch(e){toast(e.message);input.value=text}}
+$('send').onclick=sendText;$('messageInput').onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendText()}};
+$('attach').onclick=()=>$('fileInput').click();
+$('fileInput').onchange=async()=>{let file=$('fileInput').files[0];if(!file)return;if(file.size>15*1024*1024){toast('Максимальный размер файла — 15 МБ');$('fileInput').value='';return}if(!selected){toast('Сначала выбери собеседника');return}try{toast('Отправляем файл...');let buf=await file.arrayBuffer(),bytes=new Uint8Array(buf),binary='';for(let i=0;i<bytes.length;i+=0x8000)binary+=String.fromCharCode(...bytes.subarray(i,i+0x8000));let content=btoa(binary);let d=await api('/api/upload',{recipient:selected,filename:file.name,mime:file.type||'application/octet-stream',content});lastId=Math.max(lastId,d.message.id);renderMessage(d.message);toast('Файл отправлен')}catch(e){toast(e.message)}$('fileInput').value=''};
+setMode(false);
+</script>
+</body></html>

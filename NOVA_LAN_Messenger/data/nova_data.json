@@ -1,0 +1,29 @@
+{
+  "users": {
+    "qwer": {
+      "username": "qwer",
+      "salt": "88f2f8e62250629e0fd1433e7bfa5dde",
+      "password": "9540e6b5c7e6e18d33cb1b6e625c15d29b67f887dcf42583f7f1005357ab088f",
+      "last_seen": 1793956243.700684
+    },
+    "osaki": {
+      "username": "Osaki",
+      "salt": "44ebb6d3a8d64776bd7c1378bbf0dd15",
+      "password": "d731f46d47aeafc47d410cd60bdba6502c5625a359efe0a0f18f0cfc49fc5a2c",
+      "last_seen": 1794549441.1756644
+    }
+  },
+  "messages": [
+    {
+      "id": 1,
+      "sender": "Osaki",
+      "recipient": "qwer",
+      "text": "пупупу",
+      "time": 1794501543.2581549,
+      "file_id": null,
+      "file_name": null,
+      "file_type": null
+    }
+  ],
+  "next_id": 2
+}
